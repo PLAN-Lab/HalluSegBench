@@ -47,14 +47,16 @@ python generate_json.py \
     --prdiction_data_path <path_to_prediction> \
 ```
 
-3. Get consistency based performance metrics
+## Get evaluation scores on the metrics
+
+1. Get consistency based performance metrics
 ```
 python get_consistency.py \
     --json_path <path_to_generated_json.json> \
     --base_path <path_to_prediction> \
 ```
 
-4. Get the hallucination based performance metrics
+2. Get the hallucination based performance metrics
 ```
 python get_hallucination.py \
     --json_path <path_to_generated_json.json> \
