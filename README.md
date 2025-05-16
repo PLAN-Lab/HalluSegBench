@@ -26,7 +26,8 @@ pip install -r requirements.txt
 ```
 
 ## Prepare predictions
-1. Run your model on all four settings mentioned in the datast and save the masks in four different directories as:
+1. Run your model on all four settings mentioned in the datast and save the masks in four different directories as mentioned below.
+
 The mask names should follow the format of `{image_id}_{ann_id}_mask.png` where `image_id` and `ann_id` is from RefCOCO, also found in `filter_anno.json` in the dataset. 
 
 eg. `COCO_train2014_000000533293_299985_mask.png`
