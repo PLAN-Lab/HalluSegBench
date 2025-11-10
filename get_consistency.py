@@ -22,6 +22,7 @@ def main(args):
 
     json_path = args.json_path
     base_path = args.base_path
+    pred_base_path = args.pred_base_path
     with open(json_path, "r") as f:
         data = json.load(f)
     
@@ -31,14 +32,14 @@ def main(args):
 
     for item in data:
         try:
-            image_ann = f"{item['image_file']} | ann_id: {item['ann_id']}"
+            image_ann = f"{item['factual_image_path']} | ann_id: {item['ann_id']}"
             print(f"\n {image_ann}")
 
-            gt1_path = os.path.join(base_path, item["mask_file"])
-            gt3_path = os.path.join(base_path, item["new_mask_path"])
-            pred1_path = item.get("mask_orgl_orgi")
-            pred2_path = item.get("mask_edtl_orgi")
-            pred3_path = item.get("mask_orgl_edti")
+            gt1_path = os.path.join(base_path, item["factual_mask_path"])
+            gt3_path = os.path.join(base_path, item["counterfactual_mask_path"])
+            pred1_path = os.path.join(pred_base_path, item.get("mask_orgl_orgi"))
+            pred2_path = os.path.join(pred_base_path, item.get("mask_edtl_orgi"))
+            pred3_path = os.path.join(pred_base_path, item.get("mask_orgl_edti"))
 
             if not (os.path.exists(gt1_path) and os.path.exists(gt3_path)):
                 print("Ground truth mask not found, skipped.")
@@ -83,12 +84,12 @@ def main(args):
                 diff_13.append(diff)
 
         except Exception as e:
-            print(f" Error processing {item.get('image_file')}: {e}")
+            print(f" Error processing {item.get('factual_image_path')}: {e}")
 
 
     print("\n IOU Summary:")
-    print(f"1. IOU(mask_file, mask_orgl_origi): mean = {np.mean(ious_1):.4f}")
-    print(f"2. IOU(mask_file, mask_edtl_edti): mean = {np.mean(ious_2):.4f}")
+    print(f"1. IOU(mask_file, mask_orgl_orgi): mean = {np.mean(ious_1):.4f}")
+    print(f"2. IOU(mask_file, mask_edtl_orgi): mean = {np.mean(ious_2):.4f}")
     print(f"3. IOU(new_mask_path, mask_orgl_edti): mean = {np.mean(ious_3):.4f}")
 
     print("\n IOU Difference Summary:")
@@ -100,6 +101,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Compute IOU and differences between masks.")
     parser.add_argument("--json_path", type=str, required=True, help="Path to the JSON file.")
     parser.add_argument("--base_path", type=str, required=True, help="Base path for the masks.")
+    parser.add_argument("--pred_base_path", type=str, required=True, help="Base path for predicted masks if needed.")
     
     args = parser.parse_args()
     

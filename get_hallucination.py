@@ -29,13 +29,14 @@ def main(args):
     
     json_path = args.json_path
     data_base_path = args.base_path
+    pred_base_path = args.pred_base_path
 
     with open(json_path, "r") as f:
         data = json.load(f)
 
     for item in tqdm(data, desc="Calculating hallucination scores"):
-        mask_file = os.path.join(data_base_path, item["mask_file"])
-        pred_path = item.get("mask_edtl_orgi")
+        mask_file = os.path.join(data_base_path, item["factual_mask_path"])
+        pred_path = os.path.join(pred_base_path, item.get("mask_edtl_orgi"))
 
         if pred_path and os.path.exists(mask_file) and os.path.exists(pred_path):
             mask_gt = cv2.imread(mask_file, 0)
@@ -43,8 +44,8 @@ def main(args):
             score1 = compute_score(mask_gt, mask_pred, mask_gt.shape)
             item["score_edtl_orgi"] = round(score1, 4)
 
-        new_mask_file = os.path.join(data_base_path, item["new_mask_path"])
-        pred_path = item.get("mask_orgl_edti")
+        new_mask_file = os.path.join(data_base_path, item["counterfactual_mask_path"])
+        pred_path = os.path.join(pred_base_path, item.get("mask_orgl_edti"))
 
         if pred_path and os.path.exists(new_mask_file) and os.path.exists(pred_path):
             mask_gt = cv2.imread(new_mask_file, 0)
@@ -94,6 +95,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Calculate hallucination scores.")
     parser.add_argument("--json_path", type=str, required=True, help="Path to the JSON file.")
     parser.add_argument("--base_path", type=str, required=True, help="Base path for the masks.")
+    parser.add_argument("--pred_base_path", type=str, required=True, help="Base path for predicted masks if needed.")
 
     args = parser.parse_args()
     main(args)

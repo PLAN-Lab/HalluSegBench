@@ -44,7 +44,7 @@ eg. `COCO_train2014_000000533293_299985_mask.png`
 ```
 python generate_json.py \
     --data_ann_path <path_to_filter_anno.json> \
-    --output_json_path <output_json_path> \
+    --output_json_path <path_to_prediction>/results.json \
     --prdiction_data_path <path_to_prediction> \
 ```
 
@@ -53,13 +53,15 @@ python generate_json.py \
 1. Get consistency based performance metrics
 ```
 python get_consistency.py \
-    --json_path <path_to_generated_json.json> \
-    --base_path <path_to_prediction> \
+    --json_path <path_to_prediction>/results.json \
+    --base_path <path_to_data_base_dir> \
+    --pred_base_path <path_to_prediction>
 ```
 
 2. Get the hallucination based performance metrics
 ```
 python get_hallucination.py \
-    --json_path <path_to_generated_json.json> \
-    --base_path <path_to_prediction> \
+    --json_path <path_to_prediction>/results.json \
+    --base_path <path_to_data_base_dir> \
+    --pred_base_path <path_to_prediction>
 ```
