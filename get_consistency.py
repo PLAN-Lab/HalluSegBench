@@ -57,7 +57,7 @@ def main(args):
                 iou1 = compute_iou(gt1, pred1, image_shape)
                 ious_1.append(iou1)
             else:
-                print("⚠️ mask_orgl_origi missing")
+                print("⚠️ mask_orgl_origi missing:", pred1_path)
 
             # Group 2
             if pred2_path and os.path.exists(pred2_path):
@@ -65,7 +65,7 @@ def main(args):
                 iou2 = compute_iou(gt1, pred2, image_shape)
                 ious_2.append(iou2)
             else:
-                print("⚠️ mask_edtl_edti missing")
+                print("⚠️ mask_edtl_edti missing", pred2_path)
 
             # Group 3
             if pred3_path and os.path.exists(pred3_path):
@@ -73,7 +73,7 @@ def main(args):
                 iou3 = compute_iou(gt3, pred3, image_shape)
                 ious_3.append(iou3)
             else:
-                print("⚠️ mask_orgl_edti missing")
+                print("⚠️ mask_orgl_edti missing", pred3_path)
 
             # Diffs
             if iou1 is not None and iou2 is not None:

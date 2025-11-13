@@ -43,9 +43,9 @@ eg. `COCO_train2014_000000533293_299985_mask.png`
 2. Prepare a json file based on `filter_anno.json` in the dataset
 ```
 python generate_json.py \
-    --data_ann_path <path_to_filter_anno.json> \
+    --data_ann_path <path_to_data.json> \
     --output_json_path <path_to_prediction>/results.json \
-    --prdiction_data_path <path_to_prediction> \
+    --prediction_data_path <path_to_prediction> \
 ```
 
 ## Get evaluation scores on the metrics
