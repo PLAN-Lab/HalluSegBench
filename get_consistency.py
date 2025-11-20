@@ -56,6 +56,7 @@ def main(args):
                 pred1 = cv2.imread(pred1_path, 0) > 0
                 iou1 = compute_iou(gt1, pred1, image_shape)
                 ious_1.append(iou1)
+                item["iou_orgl_orgi"] = round(iou1, 4)
             else:
                 print("⚠️ mask_orgl_origi missing:", pred1_path)
 
@@ -64,6 +65,7 @@ def main(args):
                 pred2 = cv2.imread(pred2_path, 0) > 0
                 iou2 = compute_iou(gt1, pred2, image_shape)
                 ious_2.append(iou2)
+                item["iou_edtl_orgi"] = round(iou2, 4)
             else:
                 print("⚠️ mask_edtl_edti missing", pred2_path)
 
@@ -72,6 +74,7 @@ def main(args):
                 pred3 = cv2.imread(pred3_path, 0) > 0
                 iou3 = compute_iou(gt3, pred3, image_shape)
                 ious_3.append(iou3)
+                item["iou_orgl_edti"] = round(iou3, 4)
             else:
                 print("⚠️ mask_orgl_edti missing", pred3_path)
 
@@ -79,12 +82,20 @@ def main(args):
             if iou1 is not None and iou2 is not None:
                 diff = (iou1 - iou2)
                 diff_12.append(diff)
+                item["consistency_1_minus_2"] = round(diff, 4)
             if iou1 is not None and iou3 is not None:
                 diff = (iou1 - iou3)
                 diff_13.append(diff)
+                item["consistency_1_minus_3"] = round(diff, 4)
 
         except Exception as e:
             print(f" Error processing {item.get('factual_image_path')}: {e}")
+
+    # Save updated per-item consistency scores back to JSON
+    with open(json_path, "w") as f:
+        json.dump(data, f, indent=2)
+
+    print(f"\nPer-item consistency scores saved to {json_path}")
 
 
     print("\n IOU Summary:")
